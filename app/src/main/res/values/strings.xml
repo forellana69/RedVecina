@@ -1,3 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Myapp</string>
+    <string name="app_name">RedVecina</string>
+
+    <string name="usuario_nombre">Francisco Orellana</string>
+    <string name="usuario_rol">Vecino</string>
+    <string name="junta_vecinal">Junta de Vecinos N° 12</string>
+
+    <string name="mis_datos">Mis datos</string>
+    <string name="mis_datos_desc">Información personal y de contacto</string>
+
+    <string name="mis_avisos">Mis avisos</string>
+    <string name="mis_avisos_desc">Publicaciones que he creado</string>
+
+    <string name="mis_participaciones">Mis participaciones</string>
+    <string name="mis_participaciones_desc">Debates y conversaciones</string>
+
+    <string name="configuracion">Configuración</string>
+    <string name="configuracion_desc">Notificaciones y preferencias</string>
+
+    <string name="mensaje_comunidad">
+        Juntos hacemos una comunidad más segura
+    </string>
+
+    <string name="chat">Chat</string>
+    <string name="avisos">Avisos</string>
+    <string name="debate">Debate</string>
+    <string name="perfil">Perfil</string>
+    <string name="emergencia">Emergencia</string>
 </resources>

@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+    android:layout_width="match_parent"
+    android:layout_height="84dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:layout_gravity="bottom"
+
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+
+        android:background="@drawable/bg_bottom_nav">
+
+        <LinearLayout
+            android:id="@+id/navChat"
+
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+
+            android:orientation="vertical"
+            android:gravity="center"
+
+            android:clickable="true"
+            android:focusable="true">
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+
+                android:src="@drawable/ic_chat"
+                app:tint="@color/gris"
+
+                android:contentDescription="Chat" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:text="Chat"
+                android:textColor="@color/gris"
+                android:textSize="10sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/navAvisos"
+
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+
+            android:orientation="vertical"
+            android:gravity="center"
+
+            android:clickable="true"
+            android:focusable="true">
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+
+                android:src="@drawable/ic_campaign"
+                app:tint="@color/gris"
+
+                android:contentDescription="Avisos" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:text="Avisos"
+                android:textColor="@color/gris"
+                android:textSize="10sp" />
+
+        </LinearLayout>
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <LinearLayout
+            android:id="@+id/navDebate"
+
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+
+            android:orientation="vertical"
+            android:gravity="center"
+
+            android:clickable="true"
+            android:focusable="true">
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+
+                android:src="@drawable/ic_groups"
+                app:tint="@color/gris"
+
+                android:contentDescription="Debate" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:text="Debate"
+                android:textColor="@color/gris"
+                android:textSize="10sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/navPerfil"
+
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+
+                android:src="@drawable/ic_person"
+                app:tint="@color/rojo_principal"
+
+                android:contentDescription="Perfil" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:text="Perfil"
+                android:textColor="@color/rojo_principal"
+                android:textSize="10sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/navEmergencia"
+
+        android:layout_width="78dp"
+        android:layout_height="78dp"
+
+        android:layout_gravity="center_horizontal|top"
+
+        android:translationY="-1dp"
+
+        android:clickable="true"
+        android:focusable="true">
+
+
+        <ImageView
+            android:layout_width="74dp"
+            android:layout_height="74dp"
+
+            android:layout_gravity="center"
+
+            android:src="@drawable/bg_emergency_circle"
+
+            android:contentDescription="Emergencia" />
+
+
+        <ImageView
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+
+            android:layout_gravity="center"
+
+            android:src="@drawable/ic_emergency"
+
+            app:tint="@color/blanco"
+
+            android:contentDescription="Enviar emergencia" />
+
+    </FrameLayout>
+
+</FrameLayout>
