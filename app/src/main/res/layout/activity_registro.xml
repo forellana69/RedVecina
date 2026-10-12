@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="@color/blanco">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <TextView
+            android:id="@+id/btnVolverLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="‹ Volver al inicio de sesión"
+            android:textColor="@color/rojo_principal"
+            android:textSize="16sp"
+            android:padding="8dp"
+            android:clickable="true"
+            android:focusable="true" />
+
+        <ImageView
+            android:layout_width="76dp"
+            android:layout_height="76dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="12dp"
+            android:src="@drawable/logo_sos"
+            android:contentDescription="Logo de RedVecina"
+            android:scaleType="fitCenter" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:gravity="center"
+            android:text="Crear una cuenta"
+            android:textColor="@color/rojo_principal"
+            android:textSize="27sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:gravity="center"
+            android:text="Únete a tu comunidad"
+            android:textColor="@color/gris"
+            android:textSize="14sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:orientation="vertical"
+            android:padding="20dp"
+            android:background="@drawable/bg_card">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Tus datos"
+                android:textColor="@color/texto_principal"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/etNombreRegistro"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:hint="Nombre completo"
+                android:inputType="textPersonName|textCapWords"
+                android:autofillHints="name"
+                android:maxLines="1"
+                android:padding="12dp" />
+
+            <EditText
+                android:id="@+id/etCorreoRegistro"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:hint="Correo electrónico"
+                android:inputType="textEmailAddress"
+                android:autofillHints="emailAddress"
+                android:maxLines="1"
+                android:padding="12dp" />
+
+            <EditText
+                android:id="@+id/etContrasenaRegistro"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:hint="Contraseña"
+                android:inputType="textPassword"
+                android:autofillHints="newPassword"
+                android:maxLines="1"
+                android:padding="12dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="¿Cómo deseas registrarte?"
+                android:textColor="@color/texto_principal"
+                android:textSize="17sp"
+                android:textStyle="bold" />
+
+            <RadioGroup
+                android:id="@+id/rgTipoUsuario"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="vertical">
+
+                <RadioButton
+                    android:id="@+id/rbVecino"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="Vecino"
+                    android:textColor="@color/texto_principal"
+                    android:padding="6dp" />
+
+                <RadioButton
+                    android:id="@+id/rbAdministrador"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="Administrador de junta"
+                    android:textColor="@color/texto_principal"
+                    android:padding="6dp" />
+
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/tvDescripcionRol"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:padding="12dp"
+                android:background="@drawable/bg_button_light"
+                android:text="Como vecino, podrás solicitar unirte a una junta de vecinos después de crear tu cuenta."
+                android:textColor="@color/texto_principal"
+                android:textSize="13sp" />
+
+            <Button
+                android:id="@+id/btnCrearCuenta"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="22dp"
+                android:text="Registrarme"
+                android:textAllCaps="false"
+                android:textColor="@color/blanco"
+                android:backgroundTint="@color/rojo_principal" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>
