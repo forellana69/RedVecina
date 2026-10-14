@@ -6,7 +6,7 @@ public class SupabaseConfig {
     }
 
     public static final String PROJECT_URL =
-            "https://uemvcziureaedtquvuhe.supabase.co/rest/v1/";
+            "https://uemvcziureaedtquvuhe.supabase.co";
 
     public static final String PUBLISHABLE_KEY =
             "sb_publishable_pK5Pa8xZO64MDxelEokdTA_-Wu7kccL";

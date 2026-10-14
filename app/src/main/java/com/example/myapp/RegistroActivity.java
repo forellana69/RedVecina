@@ -22,7 +22,7 @@ public class RegistroActivity extends AppCompatActivity {
     private RadioGroup rgTipoUsuario;
     private TextView tvDescripcionRol;
     private Button btnCrearCuenta;
-    private Button btnVolverLogin;
+    private TextView btnVolverLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
