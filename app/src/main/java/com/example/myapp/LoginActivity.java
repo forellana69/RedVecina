@@ -38,7 +38,112 @@ public class LoginActivity extends AppCompatActivity {
             );
             startActivity(intent);
         });
+
+        restaurarSesion();
     }
+
+
+    private void restaurarSesion() {
+        String accessToken =
+                SessionManager.obtenerAccessToken(this);
+
+        String usuarioId =
+                SessionManager.obtenerUserId(this);
+
+        if (accessToken == null || accessToken.isEmpty()
+                || usuarioId == null || usuarioId.isEmpty()) {
+            return;
+        }
+
+        btnIngresar.setEnabled(false);
+
+        SupabaseData.obtenerPerfil(
+                usuarioId,
+                accessToken,
+                null,
+                new SupabaseData.PerfilCallback() {
+
+                    @Override
+                    public void onSuccess(
+                            String nombre,
+                            String correoPerfil,
+                            String rol) {
+
+                        runOnUiThread(() -> {
+                            RedVecinaDBHelper dbHelper =
+                                    new RedVecinaDBHelper(
+                                            LoginActivity.this);
+
+                            boolean guardado;
+
+                            try {
+                                android.content.ContentValues perfilLocal =
+                                        dbHelper.obtenerPerfil(usuarioId);
+
+                                String correoLocal = null;
+
+                                if (perfilLocal != null) {
+                                    correoLocal = perfilLocal.getAsString(
+                                            RedVecinaDBHelper.COLUMNA_CORREO);
+                                }
+
+                                guardado = dbHelper.guardarPerfil(
+                                        usuarioId,
+                                        nombre,
+                                        correoLocal,
+                                        rol
+                                );
+
+                            } finally {
+                                dbHelper.close();
+                            }
+
+                            if (!guardado) {
+                                btnIngresar.setEnabled(true);
+
+                                Toast.makeText(
+                                        LoginActivity.this,
+                                        "No se pudo actualizar el perfil local.",
+                                        Toast.LENGTH_LONG
+                                ).show();
+
+                                return;
+                            }
+
+                            Intent intent = new Intent(
+                                    LoginActivity.this,
+                                    MainActivity.class
+                            );
+
+                            startActivity(intent);
+                            finish();
+                        });
+                    }
+
+                    @Override
+                    public void onError(String mensaje) {
+                        runOnUiThread(() -> {
+                            btnIngresar.setEnabled(true);
+
+                            if (mensaje != null
+                                    && mensaje.contains("código 401")) {
+                                SessionManager.cerrarSesion(
+                                        LoginActivity.this);
+                            }
+
+                            Toast.makeText(
+                                    LoginActivity.this,
+                                    "No se pudo restaurar la sesión. "
+                                            + "Inicia sesión nuevamente si es "
+                                            + "necesario. Detalle: " + mensaje,
+                                    Toast.LENGTH_LONG
+                            ).show();
+                        });
+                    }
+                }
+        );
+    }
+
 
     private void iniciarSesion() {
         String correo = etCorreoLogin.getText()
@@ -68,56 +173,122 @@ public class LoginActivity extends AppCompatActivity {
                 contrasena,
                 new SupabaseAuth.Callback() {
 
+
                     @Override
                     public void onSuccess(JSONObject response) {
                         runOnUiThread(() -> {
-                            String accessToken =
-                                    response.optString("access_token", "");
+                            try {
+                                String accessToken = response.optString("access_token", "");
+                                String refreshToken = response.optString("refresh_token", "");
 
-                            String refreshToken =
-                                    response.optString("refresh_token", "");
+                                JSONObject usuario = response.optJSONObject("user");
 
-                            JSONObject user =
-                                    response.optJSONObject("user");
+                                if (usuario == null) {
+                                    throw new Exception(
+                                            "Supabase no devolvió los datos del usuario.");
+                                }
 
-                            String userId = user == null
-                                    ? ""
-                                    : user.optString("id", "");
+                                String usuarioId = usuario.optString("id", "");
 
-                            if (accessToken.isEmpty()
-                                    || userId.isEmpty()) {
+                                if (accessToken.isEmpty() || usuarioId.isEmpty()) {
+                                    throw new Exception(
+                                            "La respuesta de inicio de sesión está incompleta.");
+                                }
+
+                                SessionManager.guardarSesion(
+                                        LoginActivity.this,
+                                        accessToken,
+                                        refreshToken,
+                                        usuarioId
+                                );
+
+                                SupabaseData.obtenerPerfil(
+                                        usuarioId,
+                                        accessToken,
+                                        correo,
+                                        new SupabaseData.PerfilCallback() {
+
+                                            @Override
+                                            public void onSuccess(
+                                                    String nombre,
+                                                    String correoPerfil,
+                                                    String rol) {
+
+                                                runOnUiThread(() -> {
+                                                    RedVecinaDBHelper dbHelper =
+                                                            new RedVecinaDBHelper(
+                                                                    LoginActivity.this);
+
+                                                    boolean guardado;
+
+                                                    try {
+                                                        guardado = dbHelper.guardarPerfil(
+                                                                usuarioId,
+                                                                nombre,
+                                                                correoPerfil,
+                                                                rol
+                                                        );
+                                                    } finally {
+                                                        dbHelper.close();
+                                                    }
+
+                                                    if (!guardado) {
+                                                        btnIngresar.setEnabled(true);
+
+                                                        Toast.makeText(
+                                                                LoginActivity.this,
+                                                                "No se pudo guardar el perfil local.",
+                                                                Toast.LENGTH_LONG
+                                                        ).show();
+
+                                                        return;
+                                                    }
+
+                                                    Toast.makeText(
+                                                            LoginActivity.this,
+                                                            "Inicio de sesión correcto.",
+                                                            Toast.LENGTH_SHORT
+                                                    ).show();
+
+                                                    Intent intent = new Intent(
+                                                            LoginActivity.this,
+                                                            MainActivity.class
+                                                    );
+
+                                                    startActivity(intent);
+                                                    finish();
+                                                });
+                                            }
+
+                                            @Override
+                                            public void onError(String mensaje) {
+                                                runOnUiThread(() -> {
+                                                    btnIngresar.setEnabled(true);
+
+                                                    Toast.makeText(
+                                                            LoginActivity.this,
+                                                            "No se pudo cargar el perfil: "
+                                                                    + mensaje,
+                                                            Toast.LENGTH_LONG
+                                                    ).show();
+                                                });
+                                            }
+                                        }
+                                );
+
+                            } catch (Exception e) {
                                 btnIngresar.setEnabled(true);
 
                                 Toast.makeText(
                                         LoginActivity.this,
-                                        "Supabase no devolvió una sesión válida.",
+                                        "Error al procesar el inicio de sesión: "
+                                                + e.getMessage(),
                                         Toast.LENGTH_LONG
                                 ).show();
-                                return;
                             }
-
-                            SessionManager.guardarSesion(
-                                    LoginActivity.this,
-                                    accessToken,
-                                    refreshToken,
-                                    userId
-                            );
-
-                            Toast.makeText(
-                                    LoginActivity.this,
-                                    "Inicio de sesión correcto.",
-                                    Toast.LENGTH_SHORT
-                            ).show();
-
-                            Intent intent = new Intent(
-                                    LoginActivity.this,
-                                    MainActivity.class
-                            );
-
-                            startActivity(intent);
-                            finish();
                         });
                     }
+
 
                     @Override
                     public void onError(String message) {
