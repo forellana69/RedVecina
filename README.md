@@ -68,85 +68,126 @@ NombreAplicacion/
 │   ├── src/
 │   │   └── main/
 │   │       ├── java/
-│   │       │   └── [paquete]/
+│   │       │   └── com.example.myapp/
 │   │       │       ├── MainActivity.java
-│   │       │       └── [Otras clases].java
-│   │       │
+│   │       │       └── Activity_configuracion.java
+│   │       │       └── Activity_mis_avisos.java
+│   │       │       └── Activity_mis_datos.java
+│   │       │       └── Activity_mis_participaciones.java
+│   │       │       └── AvisosActivity.java
+│   │       │       └── ChatActivity.java
+│   │       │       └── DebateActivity.java
+│   │       │       └── EmergenciaActivity.java
+│   │       │       └── LoginActivity.
+│   │       │       └── NavigationHelper.java
+│   │       │       └── RedVecinaDBHelper.java
+│   │       │       └── RegistroActivity.java
+│   │       │       └── SessionManager.java
+│   │       │       └── SupabaseAuth.java
+│   │       │       └── SupabaseConfig.java
+│   │       │       └── SupabaseData.java
 │   │       ├── res/
 │   │       │   ├── drawable/
+│   │       │   │   └── bg_avatar.xml
+│   │       │   │   └── bg_bottom_nav.xml
+│   │       │   │   └── bg_button_light.xml
+│   │       │   │   └── bg_button_red.xml
+│   │       │   │   └── bg_card.xml
+│   │       │   │   └── bg_emergency_circle.xml
+│   │       │   │   └── bg_profile_circle.xml
+│   │       │   │   └── ic_campaign.xml
+│   │       │   │   └── ic_chat.xml
+│   │       │   │   └── ic_chevron_light.xml
+│   │       │   │   └── ic_emergency.xml
+│   │       │   │   └── ic_forum.xml
+│   │       │   │   └── ic_groups.xml
+│   │       │   │   └── ic_home.xml
+│   │       │   │   └── ic_launcher_background.xml
+│   │       │   │   └── ic_launcher_foreground.xml
+│   │       │   │   └── ic_location.xml
+│   │       │   │   └── ic_person.xml
+│   │       │   │   └── ic_settings.xml
+│   │       │   │   └── logo_sos.xml
 │   │       │   ├── layout/
+│   │       │   │   └── activity_avisos.xml
+│   │       │   │   └── activity_chat.xml
+│   │       │   │   └── activity_configuracion.xml
+│   │       │   │   └── activity_debate.xml
+│   │       │   │   └── activity_emergencia.xml
+│   │       │   │   └── activity_login.xml
+│   │       │   │   └── activity_main.xml
+│   │       │   │   └── activity_mis_avisos.xml
+│   │       │   │   └── activity_mis_datos.xml
+│   │       │   │   └── activity_mis_participaciones.xml
+│   │       │   │   └── activity_registro.xml
+│   │       │   │   └── bottom_navigation.xml
 │   │       │   ├── mipmap/
+│   │       │   │   └── ic_launcher.xml
+│   │       │   │   └── ic_launcher_round.xml
 │   │       │   └── values/
+│   │       │       └── colors.xml
+│   │       │       └── strings.xml
+│   │       │       └── themes.xml
 │   │       │
 │   │       └── AndroidManifest.xml
 │   │
 │   └── build.gradle
 │
+├── Doc/
 ├── gradle/
 ├── build.gradle
 ├── settings.gradle
 └── README.md
 ```
 
-*Nota: La estructura puede variar dependiendo de la configuración y organización del proyecto.*
-
 ## 🖼️ Capturas de pantalla
 
 A continuación, se presentan algunas imágenes de las interfaces principales de la aplicación.
 
-| Pantalla | Captura |
-|---|---|
-| Inicio | [Agregar imagen] |
-| Inicio de sesión | [Agregar imagen] |
-| Menú principal | [Agregar imagen] |
-| Perfil | [Agregar imagen] |
-
-Para mostrar imágenes en GitHub, puedes crear una carpeta `screenshots/` y utilizar:
-
-```markdown
-![Pantalla principal](screenshots/inicio.png)
-```
+| Pantalla            | Captura                                                              |
+|---------------------|----------------------------------------------------------------------|
+| Registro            | ![registro_usuario.png](Screenshots/registro_usuario.png)            |
+| Inicio de sesión    | ![login.png](Screenshots/login.png)                                  |
+| Perfil              | ![perfil.png](Screenshots/perfil.png)                                |
+| Botón de emergencia | ![ventana_emergencia.png](Screenshots/ventana_emergencia.png)        |
 
 ## 👥 Roles de usuario
 
-| Rol | Descripción |
-|---|---|
-| [Rol 1] | [Permisos y funcionalidades] |
-| [Rol 2] | [Permisos y funcionalidades] |
+| Rol           | Descripción                                           |
+|---------------|-------------------------------------------------------|
+| Administrador | Control y gestión de vecinos y grupo de junta vecinal |
+| Vecino        | gestionar perfil personal y publicar en las secciones |
 
 ## 🔐 Seguridad y permisos
 
 La aplicación puede requerir los siguientes permisos del dispositivo:
 
-- [Permiso 1].
-- [Permiso 2].
-- [Permiso 3].
-
-Los permisos se solicitan según las funcionalidades que utiliza la aplicación.
+- Permiso de Fotos.
+- Permiso de Video.
+- Permiso de Almacenamiento (galería).
+- Permiso de Ubicación.
+- Permiso de Alarma.
+- Permiso de Vibración.
 
 ## 🚧 Estado del proyecto
 
-**Estado:** [En desarrollo / Finalizado / En mantenimiento].
+**Estado:** En desarrollo.
 
 ### Funcionalidades pendientes
 
-- [ ] [Funcionalidad pendiente 1].
-- [ ] [Funcionalidad pendiente 2].
-- [ ] [Mejoras futuras].
+- [ ] Sección de Chat.
+- [ ] Sección de Avisos.
+- [ ] Sección de Debate.
 
 ## 👨‍💻 Autores
 
-| Integrante | Rol |
-|---|---|
-| [Nombre del integrante 1] | Desarrollador |
-| [Nombre del integrante 2] | Desarrollador |
-| [Nombre del integrante 3] | Documentación y pruebas |
+| Integrante                | Rol                                                   |
+|---------------------------|-------------------------------------------------------|
+| Francisco Orellana        | Desarrollador, Documentación, Planificación y Pruebas |
 
 ## 📄 Licencia
 
-Este proyecto fue desarrollado con fines [académicos / educativos / comerciales].
-
-[Indicar licencia si corresponde].
+Este proyecto fue desarrollado con fines académicos y educativos.
 
 ---
 
