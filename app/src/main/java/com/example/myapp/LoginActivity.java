@@ -12,13 +12,36 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import org.json.JSONObject;
 
+/**
+ * Actividad encargada de gestionar el inicio de sesión y la autenticación de los usuarios.
+ * Provee la verificación de credenciales, la persistencia de la sesión activa en el dispositivo
+ * y la redirección hacia el módulo de registro o la pantalla principal.
+ *
+ * @author Francisco
+ * @version 1.0
+ */
 public class LoginActivity extends AppCompatActivity {
 
+    /** Campo de texto destinado a la entrada del correo electrónico del usuario. */
     private EditText etCorreoLogin;
+
+    /** Campo de texto destinado a la entrada de la contraseña de la cuenta. */
     private EditText etContrasenaLogin;
+
+    /** Botón que gatilla la lógica de validación e inicio de sesión. */
     private Button btnIngresar;
+
+    /** Botón que redirige al usuario hacia la pantalla de registro de cuentas. */
     private Button btnIrRegistro;
 
+    /**
+     * Inicializa la actividad, vincula las vistas de la interfaz gráfica, define las
+     * acciones al pulsar los botones e invoca el intento automático de restauración de sesión.
+     *
+     * @param savedInstanceState Si la actividad se vuelve a inicializar después de haber
+     *                           sido cerrada previamente, este Bundle contiene los datos
+     *                           más recientes suministrados. De lo contrario, es null.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,7 +65,11 @@ public class LoginActivity extends AppCompatActivity {
         restaurarSesion();
     }
 
-
+    /**
+     * Verifica la existencia de credenciales previamente guardadas de forma local. Si el token
+     * y el identificador son válidos, intenta sincronizar el perfil con el backend en segundo plano
+     * y redirige de forma directa a la actividad principal de la aplicación.
+     */
     private void restaurarSesion() {
         String accessToken =
                 SessionManager.obtenerAccessToken(this);
@@ -120,6 +147,14 @@ public class LoginActivity extends AppCompatActivity {
                         });
                     }
 
+
+                    /**
+                     * Intercepta e informa los errores ocurridos durante la restauración de sesión.
+                     * Si la respuesta corresponde a un error de credenciales vencidas (401), se limpian
+                     * los tokens locales y se solicita reautenticación explícita.
+                     *
+                     * @param mensaje Detalle técnico descriptivo del fallo devuelto por el servidor.
+                     */
                     @Override
                     public void onError(String mensaje) {
                         runOnUiThread(() -> {
@@ -144,7 +179,10 @@ public class LoginActivity extends AppCompatActivity {
         );
     }
 
-
+    /**
+     * Valida las entradas de texto del usuario (presencia de campos vacíos y formato correcto de correo),
+     * bloquea temporalmente el botón de ingreso y delega el intento de autenticación en los servicios remotos.
+     */
     private void iniciarSesion() {
         String correo = etCorreoLogin.getText()
                 .toString().trim();
@@ -173,7 +211,13 @@ public class LoginActivity extends AppCompatActivity {
                 contrasena,
                 new SupabaseAuth.Callback() {
 
-
+                    /**
+                     * Procesa la respuesta exitosa del servidor de autenticación. Extrae los tokens
+                     * de acceso/refresco junto con el ID del usuario, los almacena localmente mediante
+                     * el SessionManager e inicia la consulta para descargar y sincronizar el perfil.
+                     *
+                     * @param response Objeto JSON devuelto por el servidor con las credenciales de la sesión.
+                     */
                     @Override
                     public void onSuccess(JSONObject response) {
                         runOnUiThread(() -> {
@@ -208,6 +252,15 @@ public class LoginActivity extends AppCompatActivity {
                                         correo,
                                         new SupabaseData.PerfilCallback() {
 
+                                            /**
+                                             * Callback interno gatillado cuando el perfil es recuperado remotamente de forma exitosa.
+                                             * Almacena de manera segura la información en la base de datos local SQLite y redirige al
+                                             * usuario hacia la interfaz principal (MainActivity).
+                                             *
+                                             * @param nombre       Nombre público o alias del usuario del perfil.
+                                             * @param correoPerfil Dirección de correo electrónico asociada a la cuenta.
+                                             * @param rol          Nivel de permisos o rol asignado al usuario dentro de la comunidad.
+                                             */
                                             @Override
                                             public void onSuccess(
                                                     String nombre,
@@ -260,6 +313,12 @@ public class LoginActivity extends AppCompatActivity {
                                                 });
                                             }
 
+                                            /**
+                                             * Callback interno gatillado ante la presencia de errores en la descarga del perfil remoto.
+                                             * Desbloquea la interfaz de usuario para permitir un nuevo intento e informa el motivo.
+                                             *
+                                             * @param mensaje Detalle del error arrojado por el servicio de base de datos.
+                                             */
                                             @Override
                                             public void onError(String mensaje) {
                                                 runOnUiThread(() -> {
@@ -289,7 +348,12 @@ public class LoginActivity extends AppCompatActivity {
                         });
                     }
 
-
+                    /**
+                     * Gestiona las fallas globales durante la autenticación de credenciales (por ejemplo, contraseña errónea).
+                     * Reactiva el botón de ingreso y despliega una notificación informativa con la descripción del problema.
+                     *
+                     * @param message Mensaje descriptivo con la causa de la denegación del servicio.
+                     */
                     @Override
                     public void onError(String message) {
                         runOnUiThread(() -> {

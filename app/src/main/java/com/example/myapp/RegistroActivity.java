@@ -1,4 +1,3 @@
-
 package com.example.myapp;
 
 import android.content.Intent;
@@ -14,16 +13,45 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import org.json.JSONObject;
 
+/**
+ * Actividad encargada de gestionar el registro de nuevos usuarios en la plataforma.
+ * Provee la interfaz para ingresar credenciales, elegir el rol dentro de la comunidad
+ * (Administrador o Vecino), validar las entradas y dar de alta la cuenta en el backend.
+ *
+ * @author Francisco
+ * @version 1.0
+ */
 public class RegistroActivity extends AppCompatActivity {
 
+    /** Campo de texto para ingresar el nombre completo del usuario. */
     private EditText etNombreRegistro;
+
+    /** Campo de texto para ingresar el correo electrónico de la cuenta. */
     private EditText etCorreoRegistro;
+
+    /** Campo de texto para ingresar la contraseña de seguridad. */
     private EditText etContrasenaRegistro;
+
+    /** Grupo de botones de opción (RadioButtons) para alternar la selección del rol. */
     private RadioGroup rgTipoUsuario;
+
+    /** Etiqueta informativa que describe dinámicamente el alcance del rol seleccionado. */
     private TextView tvDescripcionRol;
+
+    /** Botón que procesa y gatilla el flujo de inscripción de la cuenta. */
     private Button btnCrearCuenta;
+
+    /** Enlace de texto interactivo para retroceder e ir a la interfaz de login. */
     private TextView btnVolverLogin;
 
+    /**
+     * Inicializa la actividad, vincula los componentes de la interfaz de usuario,
+     * configura los cambios dinámicos del rol de usuario y gestiona los clics de interacción.
+     *
+     * @param savedInstanceState Si la actividad se vuelve a inicializar después de haber
+     *                           sido cerrada previamente, este Bundle contiene los datos
+     *                           más recientes suministrados. De lo contrario, es null.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +82,11 @@ public class RegistroActivity extends AppCompatActivity {
         btnVolverLogin.setOnClickListener(v -> finish());
     }
 
+    /**
+     * Captura las entradas de texto de la interfaz, valida que se cumplan las reglas de
+     * negocio básicas (campos completos, formato de e-mail y longitud mínima de clave)
+     * e inicia la petición asíncrona hacia el servicio de autenticación remoto.
+     */
     private void registrarUsuario() {
         String nombre = etNombreRegistro.getText()
                 .toString().trim();
@@ -110,6 +143,13 @@ public class RegistroActivity extends AppCompatActivity {
                 rol,
                 new SupabaseAuth.Callback() {
 
+                    /**
+                     * Procesa la respuesta favorable del servidor ante la creación de la cuenta.
+                     * Si se devuelven tokens de sesión automáticos, inicia la sesión en el terminal y
+                     * navega a la pantalla principal; de lo contrario, le pide al usuario confirmar vía e-mail.
+                     *
+                     * @param response Objeto JSON devuelto por la API con el estado e información de la cuenta.
+                     */
                     @Override
                     public void onSuccess(JSONObject response) {
                         runOnUiThread(() -> {
@@ -171,6 +211,13 @@ public class RegistroActivity extends AppCompatActivity {
                         });
                     }
 
+                    /**
+                     * Gestiona las fallas globales ocurridas durante el proceso de registro de la cuenta.
+                     * Reactiva el botón de creación de cuenta para permitir nuevos intentos y despliega
+                     * un mensaje Toast con el motivo exacto del error.
+                     *
+                     * @param message Mensaje descriptivo con la causa de la falla devuelta por el servidor.
+                     */
                     @Override
                     public void onError(String message) {
                         runOnUiThread(() -> {

@@ -4,8 +4,25 @@ import android.app.Activity;
 import android.content.Intent;
 import android.view.View;
 
+/**
+ * Clase de utilidad (Helper) encargada de centralizar y unificar la lógica del menú
+ * o barra de navegación compartida en toda la aplicación.
+ * Evita la duplicación de código vinculando dinámicamente las acciones de clic en los
+ * componentes comunes de las distintas actividades.
+ *
+ * @author Francisco
+ * @version 1.0
+ */
 public class NavigationHelper {
 
+    /**
+     * Busca los elementos visuales de la barra de navegación presentes en la actividad provista,
+     * y si existen, les asigna los escuchadores de clics necesarios para redirigir al usuario
+     * a los módulos de Chat, Avisos, Emergencia, Debate y Perfil.
+     *
+     * @param activity La instancia de la actividad actual sobre la cual se buscarán las vistas
+     *                 de navegación y se ejecutarán las transiciones de pantalla (Intents).
+     */
     public static void configurarNavegacion(Activity activity) {
 
         // CHAT

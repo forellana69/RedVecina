@@ -12,25 +12,53 @@ import android.location.LocationManager;
 import android.media.AudioManager;
 import android.media.ToneGenerator;
 import android.os.Build;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+/**
+ * Actividad encargada de gestionar situaciones de emergencia dentro de la aplicación.
+ * Ofrece la posibilidad de emitir una alarma acústica local, activar vibración cíclica
+ * y obtener la localización geográfica exacta del dispositivo para compartirla mediante
+ * un mapa dinámico con la red de usuarios a la que pertenece
+ *
+ * @author Francisco
+ * @version 1.0
+ */
 public class EmergenciaActivity extends AppCompatActivity {
 
+    /** Código identificador para la solicitud de permisos de geolocalización en tiempo de ejecución. */
     private static final int CODIGO_PERMISO_UBICACION = 1001;
+
+    /** Administrador del sistema encargado de proveer acceso a los servicios de localización. */
     private LocationManager locationManager;
+
+    /** Escuchador de eventos que reacciona ante los cambios de coordenadas geográficas recibidas. */
     private LocationListener locationListener;
+
+    /** Manejador asociado al hilo principal utilizado para programar operaciones con retardo de tiempo. */
     private final Handler handler = new Handler(Looper.getMainLooper());
+
+    /** Tarea programable encargada de cancelar la búsqueda de señal si se supera el tiempo límite. */
     private Runnable tiempoLimiteUbicacion;
+
+    /** Componente encargado de reproducir señales auditivas de alerta mediante el hardware del teléfono. */
     private ToneGenerator generadorTono;
+
+    /** Instancia del sistema responsable de controlar el hardware de vibración del terminal. */
     private Vibrator vibrador;
 
+    /**
+     * Inicializa la actividad, infla la interfaz gráfica de usuario, vincula el helper
+     * de navegación general y define el listener de pulsación para el gatillo de emergencia.
+     *
+     * @param savedInstanceState Si la actividad se vuelve a inicializar después de haber
+     *                           sido cerrada previamente, este Bundle contiene los datos
+     *                           más recientes suministrados. De lo contrario, es null.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +72,10 @@ public class EmergenciaActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Despliega un cuadro de diálogo flotante (AlertDialog) para evitar activaciones accidentales,
+     * requiriendo una confirmación explícita del usuario antes de detonar el protocolo operativo.
+     */
     private void mostrarConfirmacion() {
 
         new AlertDialog.Builder(this)
@@ -61,7 +93,11 @@ public class EmergenciaActivity extends AppCompatActivity {
                 .show();
     }
 
-
+    /**
+     * Inicia el proceso operativo de respuesta ante la emergencia. Ejecuta inmediatamente
+     * la alarma sensorial sonora/vibratoria local y evalúa si el usuario ya dispone de los
+     * permisos obligatorios de ubicación; si no los tiene, solicita el acceso en tiempo de ejecución.
+     */
     private void activarAlerta() {
 
         iniciarAlarmaLocal();
@@ -88,6 +124,11 @@ public class EmergenciaActivity extends AppCompatActivity {
         obtenerUbicacionActual();
     }
 
+    /**
+     * Dispara las alertas físicas inmediatas en el terminal de manera segura. Combina señales
+     * acústicas continuas a través del canal de alarma del sistema con un patrón cíclico de
+     * vibraciones rítmicas durante un periodo controlado de 8 segundos.
+     */
     private void iniciarAlarmaLocal() {
         try {
             if (generadorTono != null) {
@@ -142,7 +183,12 @@ public class EmergenciaActivity extends AppCompatActivity {
         ).show();
     }
 
-
+    /**
+     * Construye un mensaje de texto formateado con las coordenadas físicas actuales y un enlace web
+     * directo hacia Google Maps, delegando su envío mediante un selector de intenciones nativo del sistema.
+     *
+     * @param ubicacion Estructura espacial con la información detallada de la latitud y longitud actuales.
+     */
     private void compartirUbicacion(Location ubicacion) {
         double latitud = ubicacion.getLatitude();
         double longitud = ubicacion.getLongitude();
@@ -171,12 +217,17 @@ public class EmergenciaActivity extends AppCompatActivity {
         );
     }
 
-
+    /**
+     * Intercepta la respuesta del cuadro de diálogo nativo de concesión de permisos.
+     * Si la solicitud de ubicación es aprobada por el usuario, inicia la consulta de la posición geográfica;
+     * de lo contrario, alerta mediante un mensaje en pantalla sobre la limitación para compartirla.
+     *
+     * @param requestCode  Código entero que valida la correspondencia de la llamada de solicitud.
+     * @param permissions  Colección de cadenas de texto con los identificadores de permisos solicitados.
+     * @param grantResults Matriz de enteros que determina si cada permiso fue otorgado o rechazado.
+     */
     @Override
-    public void onRequestPermissionsResult(
-            int requestCode,
-            String[] permissions,
-            int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
 
         super.onRequestPermissionsResult(
                 requestCode, permissions, grantResults
@@ -205,7 +256,11 @@ public class EmergenciaActivity extends AppCompatActivity {
         }
     }
 
-
+    /**
+     * Verifica la disponibilidad física de los hardware de localización (GPS o Antenas de Red),
+     * instancia el escuchador en segundo plano para obtener el cambio de coordenadas y configura
+     * un temporizador (timeout) de 20 segundos para detener la búsqueda en caso de falta de señal.
+     */
     private void obtenerUbicacionActual() {
         boolean tieneUbicacionFina =
                 checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)
@@ -323,6 +378,10 @@ public class EmergenciaActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Muestra un mensaje emergente de tipo Toast notificando que ocurrió un problema inesperado
+     * o fallo genérico del sistema al intentar consultar el servicio de posicionamiento.
+     */
     private void mostrarErrorUbicacion() {
         Toast.makeText(
                 this,
